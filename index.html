@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Pemesanan - Test Checkout</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f9; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 500px; }
+        button { background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #218838; }
+        pre { background: #eeeff1; padding: 15px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Uji Coba System Checkout</h2>
+        <p>Klik tombol di bawah untuk menyimulasikan transaksi pembelian.</p>
+        <button onclick="prosesCheckout()">Jalankan Checkout</button>
+        <h3>Hasil Response API:</h3>
+        <pre id="hasilJson">Belum ada transaksi...</pre>
+    </div>
+
+    <script>
+        async function prosesCheckout() {
+            document.getElementById('hasilJson').innerText = 'Memproses...';
+            const payload = {
+                idPelanggan: "CUST-001",
+                metodePembayaran: "CREDIT_CARD",
+                tokenKartu: "tok_visa_valid_999",
+                keranjangData: [
+                    { idMenu: "MENU-01", jumlah: 2 },
+                    { idMenu: "MENU-02", jumlah: 1 }
+                ]
+            };
+            
+            try {
+                const res = await fetch('/api/v1/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                document.getElementById('hasilJson').innerText = JSON.stringify(data, null, 2);
+            } catch (err) {
+                document.getElementById('hasilJson').innerText = 'Error: ' + err.message;
+            }
+        }
+    </script>
+</body>
+</html>

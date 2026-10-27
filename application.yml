@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ordering-system
+  datasource:
+    url: jdbc:mariadb://localhost:3306/ordering_db?useGssapi=false&disableSslAndGssapi=true
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+payment:
+  gateway:
+    endpoint-url: "https://api.mockpayment.com/v1/charge"
+    api-key: "sk_live_sample_secret_key_12345"
